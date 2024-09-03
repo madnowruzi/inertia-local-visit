@@ -12,14 +12,10 @@ Based on https://github.com/inertiajs/inertia/discussions/261#discussioncomment-
 
 ## Usage
 
-Install:
-
 ```sh
-# npm
+# install
 npm i @madnow/inertia-local-visit
 ```
-
-Usage:
 
 ```ts
 // resources/app.ts
