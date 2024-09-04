@@ -20,21 +20,15 @@ npm i @madnow/inertia-local-visit
 ```ts
 // resources/app.ts
 import type { Page as InertiaPage } from "@inertiajs/core";
-import { InertiaLocalVisit } from "@madnow/inertia-local-visit";
+import { InertiaLocalVisit, findLocalPage, type LocalPages } from "@madnow/inertia-local-visit";
 
 type Page = Partial<InertiaPage> & Pick<InertiaPage, "url" | "component">;
 
-const localPagesByName: Record<string, Page> = {
-  "some-pages.page1": { url: "/some-pages/page1", component: "SomePages/Page1" },
-  "some-pages.page2": { url: "/some-pages/page2", component: "SomePages/Page2" },
-  "some-pages.page3": { url: "/some-pages/page3", component: "SomePages/Page3" },
-};
-
-const localPagesByPathname: Record<string, Page> = Object.fromEntries(
-  Object.entries(localPagesByName).map(([_, page]) => {
-    return [page.url, page];
-  }),
-);
+const localPages: LocalPages = [
+  { url: "/some-pages/page1", component: "SomePages/Page1" },
+  { url: "/some-pages/page2", component: "SomePages/Page2" },
+  { url: /^\/another-set-of-pages\/\d+$/, component: "AnotherSetOfPages/Show" },
+];
 
 void createInertiaApp({
   resolve: (name) =>
@@ -46,14 +40,20 @@ void createInertiaApp({
     // @ts-expect-error fails to recognize dataset
     let initialPage = JSON.parse(el.dataset.page);
     if (initialPage.component === "not-found") {
-      const page = localPagesByPathname[window.location.pathname];
-      if (page) initialPage = page;
+      const matched = findLocalPage(window.location.pathname, localPages);
+
+      if (matched) {
+        initialPage = {
+          url: windows.location.pathname,
+          component: matched.component,
+        };
+      }
     }
 
     props.initialPage = initialPage;
 
     const vueApp = createApp({ render: () => h(App, props) });
-    vueApp.use(plugin).use(ZiggyVue).use(InertiaLocalVisit, { localPagesByName }).mount(el);
+    vueApp.use(plugin).use(ZiggyVue).use(InertiaLocalVisit, { localPages }).mount(el);
   },
 });
 ```
