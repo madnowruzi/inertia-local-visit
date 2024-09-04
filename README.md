@@ -19,10 +19,7 @@ npm i @madnow/inertia-local-visit
 
 ```ts
 // resources/app.ts
-import type { Page as InertiaPage } from "@inertiajs/core";
 import { InertiaLocalVisit, findLocalPage, type LocalPages } from "@madnow/inertia-local-visit";
-
-type Page = Partial<InertiaPage> & Pick<InertiaPage, "url" | "component">;
 
 const localPages: LocalPages = [
   { url: "/some-pages/page1", component: "SomePages/Page1" },
@@ -44,7 +41,7 @@ void createInertiaApp({
 
       if (matched) {
         initialPage = {
-          url: windows.location.pathname,
+          url: window.location.pathname,
           component: matched.component,
         };
       }
