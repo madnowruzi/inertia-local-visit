@@ -18,7 +18,8 @@ export function findLocalPage(pathname: string, localPages: LocalPages): LocalPa
 export const InertiaLocalVisit = {
   install(app: App, options: { localPages: LocalPages }) {
     app.config.globalProperties.$localVisit = (url: string, props: Record<string, unknown>) => {
-      const localPage = findLocalPage(url, options.localPages);
+      const pathname = new URL(url).pathname;
+      const localPage = findLocalPage(pathname, options.localPages);
 
       if (!localPage) {
         throw new Error(`Local Page(${url}) Not Found!`);
