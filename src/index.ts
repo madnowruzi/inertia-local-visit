@@ -32,3 +32,9 @@ export const InertiaLocalVisit = {
     };
   },
 };
+
+declare module "vue" {
+  interface ComponentCustomProperties {
+    $localVisit: (url: string, props: Record<string, unknown>) => Promise<void>;
+  }
+}
