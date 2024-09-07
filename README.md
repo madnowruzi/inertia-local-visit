@@ -61,9 +61,9 @@ void createInertiaApp({
 <script>
 import { getCurrentInstance, toRaw } from "vue";
 
-const app = getCurrentInstance()!;
+const { appContext } = getCurrentInstance()!;
 const onClickHandler = () => {
-  app.appContext.config.globalProperties.$localVisit(
+  appContext.config.globalProperties.$localVisit(
       route("some.route.name"),
       {
         prop1: somePrimitiveValueOrProxy,
