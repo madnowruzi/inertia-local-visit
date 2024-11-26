@@ -1,6 +1,6 @@
 {
   "name": "@madnow/inertia-local-visit",
-  "version": "0.0.5",
+  "version": "0.1",
   "description": "A vue.js plugin to add local visit capability to inertia.",
   "keywords": [
     "vue",
